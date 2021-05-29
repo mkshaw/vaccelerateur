@@ -14,7 +14,9 @@ import json # for extracting API keys
 import datetime # for extracting time information
 import collections # for frequency list
 
+# Define constants and reference points
 working_dir = osp.dirname(__file__)
+NUMBER_OF_TWEETS = 1500
 
 def main():
     
@@ -29,13 +31,11 @@ def main():
     api = tweepy.API(auth)
 
     # Create cursor to navigate the feed
-    cursor = tweepy.Cursor(api.user_timeline, id="vaccelerateur06", tweet_mode="extended").items(1500) # currently hard-coded number to return; I believe 1500 is the maximum request allowed
+    cursor = tweepy.Cursor(api.user_timeline, id="vaccelerateur06", tweet_mode="extended").items(NUMBER_OF_TWEETS) # currently hard-coded number to return; I believe 1500 is the maximum request allowed
 
     # save the datetime created_at contents to a list
-    tweet_times = []
 
-    for tweet in cursor:
-        tweet_times.append(tweet.created_at) # print the actual content
+    tweet_times = [tweet.created_at for tweet in cursor] # list comprehension version of for tweet in cursor: tweet_times.append(tweet.created_at)
 
     # create list of just the hours
     hours = []
